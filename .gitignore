@@ -1,0 +1,106 @@
+### Исходники и конфиденциальные данные ###
+application.properties
+application.yml
+application-*.properties
+application-*.yml
+*.db
+*.sql
+*.csv
+*.tsv
+
+### Служебные папки IDE ###
+.idea/
+*.iws
+*.iml
+*.ipr
+.classpath
+.project
+.settings/
+.factorypath
+.springBeans
+.metadata
+bin/
+nbactions.xml
+nb-configuration.xml
+
+### Папки сборки ###
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.gz
+*.tar
+*.zip
+*.rar
+
+### Логи ###
+logs/
+*.log
+spring-boot-logger/
+**/logs/
+
+### Тесты и временные файлы ###
+test-output/
+*.lock
+*.pid
+*.seed
+*.pid.lock
+**/test-results/
+
+### Системные файлы ###
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+*.tmp
+*.swp
+*.swo
+*~
+
+### Docker ###
+.docker/
+docker-compose.override.yml
+*.pid
+docker-data/
+**/docker/volumes/
+
+### Папки с документацией ###
+**/docs/_build/
+**/docs/api/
+**/site/
+**/node_modules/
+
+### Файлы окружения (если будешь использовать) ###
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.crt
+secrets/
+
+### Файлы для тестовых данных (не путать с тестовыми классами) ###
+**/test/resources/data/
+**/test/resources/*.sql
+!**/test/resources/schema.sql
+!**/test/resources/data.sql
+
+### VS Code (на всякий случай) ###
+.vscode/
+*.code-workspace
+
+### Gradle (если вдруг перейдешь) ###
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+
+### Maven (уже есть в проекте) ###
+.mvn/
+mvnw
+mvnw.cmd
+!**/src/main/**/target/
+!**/src/test/**/target/

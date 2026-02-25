@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: springPraktik
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}           # можно переопределить
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}             # обязательно задать в .override
+      POSTGRES_DB: ${POSTGRES_DB:-practik}                # можно переопределить
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"                     # можно сменить порт
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
