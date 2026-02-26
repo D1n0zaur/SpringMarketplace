@@ -1,5 +1,6 @@
 package com.marketplace.SelfPraktik.Entities;
 
+import com.marketplace.SelfPraktik.Entities.Models.UserRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -23,15 +24,19 @@ public class UserEntity {
     @Column(name = "date_of_birth")
     private LocalDate birth;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRole role;
+
     // Конструкторы
     public UserEntity() {}
 
-    public UserEntity(Long id, String username, String email, String hashedPassword, LocalDate birth) {
-        this.id = id;
+    public UserEntity(String username, String email, String hashedPassword, LocalDate birth) {
         this.username = username;
         this.email = email;
         this.hashedPassword = hashedPassword;
         this.birth = birth;
+        this.role = UserRole.USER;
     }
 
     // Геттеры и сеттеры
@@ -73,5 +78,9 @@ public class UserEntity {
 
     public void setBirth(LocalDate birth) {
         this.birth = birth;
+    }
+
+    public UserRole getRole() {
+        return role;
     }
 }
