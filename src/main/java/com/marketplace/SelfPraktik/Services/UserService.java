@@ -1,10 +1,13 @@
 package com.marketplace.SelfPraktik.Services;
 
-import com.marketplace.SelfPraktik.Respositories.ProductRepository;
+import com.marketplace.SelfPraktik.DTO.User.User;
+import com.marketplace.SelfPraktik.DTO.User.UserUpdate;
 import com.marketplace.SelfPraktik.Respositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -13,5 +16,21 @@ public class UserService {
 
     public UserService(UserRepository repository) {
         this.repository = repository;
+    }
+
+    public List<User> getAllUsers() {
+        return null;
+    }
+
+    public User getUserById(Long Id) {
+        return null;
+    }
+
+    public User updateUser(Long id, UserUpdate userUpdateDTO) {
+        return null;
+    }
+
+    public Void deleteUser(Long id) {
+        return null;
     }
 }

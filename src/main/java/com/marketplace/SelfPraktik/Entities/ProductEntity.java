@@ -2,6 +2,8 @@ package com.marketplace.SelfPraktik.Entities;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "products")
 public class ProductEntity {
@@ -16,8 +18,8 @@ public class ProductEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "cost", nullable = false)
-    private double cost;
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
@@ -26,10 +28,10 @@ public class ProductEntity {
     // Конструкторы
     public ProductEntity() {}
 
-    public ProductEntity(String name, String description, double cost, CategoryEntity category) {
+    public ProductEntity(String name, String description, BigDecimal price, CategoryEntity category) {
         this.name = name;
         this.description = description;
-        this.cost = cost;
+        this.price = price;
         this.category = category;
     }
 
@@ -43,8 +45,8 @@ public class ProductEntity {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public double getCost() { return cost; }
-    public void setCost(double cost) { this.cost = cost; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(double cost) { this.price = price; }
 
     public CategoryEntity getCategory() { return category; }
     public void setCategory(CategoryEntity category) { this.category = category; }
