@@ -1,11 +1,18 @@
 package com.marketplace.SelfPraktik.Entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "categories")
+@Getter
+@Setter
+@NoArgsConstructor
 public class CategoryEntity {
 
     @Id
@@ -21,26 +28,11 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductEntity> products = new ArrayList<>();
 
-    // Конструкторы
-    public CategoryEntity() {}
-
+    // Конструктор
     public CategoryEntity(String name, String description) {
         this.name = name;
         this.description = description;
     }
-
-    // Геттеры и сеттеры
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public List<ProductEntity> getProducts() { return products; }
-    public void setProducts(List<ProductEntity> products) { this.products = products; }
 
     // Вспомогательные методы для синхронизации двусторонней связи
     public void addProduct(ProductEntity product) {

@@ -2,12 +2,24 @@ package com.marketplace.SelfPraktik.Entities;
 
 import com.marketplace.SelfPraktik.Entities.Models.UserRole;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+@Getter
+@Setter
+@NoArgsConstructor
+public class UserEntity implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,9 +40,7 @@ public class UserEntity {
     @Column(name = "role", nullable = false)
     private UserRole role;
 
-    // Конструкторы
-    public UserEntity() {}
-
+    // Конструктор
     public UserEntity(String username, String email, String hashedPassword, LocalDate birth) {
         this.username = username;
         this.email = email;
@@ -39,48 +49,36 @@ public class UserEntity {
         this.role = UserRole.USER;
     }
 
-    // Геттеры и сеттеры
-    public Long getId() {
-        return id;
+    // Методы UserDetails
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getHashedPassword() {
+    @Override
+    public String getPassword() {
         return hashedPassword;
     }
 
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
+    @Override
+    public String getUsername() {
+        return email; // для аутентификации используем email
     }
 
-    public LocalDate getBirth() {
-        return birth;
+    // Дополнительный метод для получения отображаемого имени
+    public String getName() {
+        return username;
     }
 
-    public void setBirth(LocalDate birth) {
-        this.birth = birth;
-    }
+    @Override
+    public boolean isAccountNonExpired() { return true; }
 
-    public UserRole getRole() {
-        return role;
-    }
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return true; }
 }

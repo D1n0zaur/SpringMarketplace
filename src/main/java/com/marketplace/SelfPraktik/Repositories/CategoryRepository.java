@@ -1,4 +1,4 @@
-package com.marketplace.SelfPraktik.Respositories;
+package com.marketplace.SelfPraktik.Repositories;
 
 import com.marketplace.SelfPraktik.Entities.CategoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

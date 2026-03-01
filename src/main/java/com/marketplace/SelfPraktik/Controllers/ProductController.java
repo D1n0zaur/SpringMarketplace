@@ -4,6 +4,7 @@ import com.marketplace.SelfPraktik.DTO.Product.Product;
 import com.marketplace.SelfPraktik.DTO.Product.ProductUpdate;
 import com.marketplace.SelfPraktik.DTO.Product.ProductCreate;
 import com.marketplace.SelfPraktik.Services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +16,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@RequiredArgsConstructor
 public class ProductController {
     private final static Logger log = LoggerFactory.getLogger(ProductController.class);
     private final ProductService productService;
-
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
