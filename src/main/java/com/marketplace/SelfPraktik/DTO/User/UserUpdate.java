@@ -6,14 +6,10 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class UserUpdate {
-    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     private Optional<String> username = Optional.empty();
 
-    @Email(message = "Email must be valid")
-    @Size(max = 100, message = "Email is too long")
     private Optional<String> email = Optional.empty();
 
-    @Past(message = "Date of birth must be in the past")
     private Optional<LocalDate> birth = Optional.empty();
 
     // Геттеры и сеттеры

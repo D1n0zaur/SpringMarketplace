@@ -8,12 +8,14 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
     private final static Logger log = LoggerFactory.getLogger(UserController.class);
@@ -31,6 +33,15 @@ public class UserController {
         log.info("Called method getUserById with id={}", id);
 
         return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<User> getProfile(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("Called method getProfile");
+
+        String email = userDetails.getUsername();
+
+        return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
     @PatchMapping("/{id}")
