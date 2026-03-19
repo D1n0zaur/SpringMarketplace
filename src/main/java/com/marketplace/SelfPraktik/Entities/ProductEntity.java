@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -31,11 +33,25 @@ public class ProductEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 
+    @ManyToMany(mappedBy = "orderedProducts")
+    private List<OrderEntity> orders = new ArrayList<>();
+
     // Конструктор
     public ProductEntity(String name, String description, BigDecimal price, CategoryEntity category) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.category = category;
+    }
+
+    // Вспомогательные методы для синхронизации двусторонней связи
+    public void addOrder(OrderEntity order) {
+        orders.add(order);
+        order.getOrderedProducts().add(this);
+    }
+
+    public void removeOrder(OrderEntity order) {
+        orders.remove(order);
+        order.getOrderedProducts().remove(this);
     }
 }

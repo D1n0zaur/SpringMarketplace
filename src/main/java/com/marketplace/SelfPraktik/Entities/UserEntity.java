@@ -1,6 +1,6 @@
 package com.marketplace.SelfPraktik.Entities;
 
-import com.marketplace.SelfPraktik.Entities.Models.UserRole;
+import com.marketplace.SelfPraktik.Entities.Enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -40,6 +41,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "role", nullable = false)
     private UserRole role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderEntity> orders = new ArrayList<>();
+
     // Конструктор
     public UserEntity(String username, String email, String hashedPassword, LocalDate birth) {
         this.username = username;
@@ -65,7 +69,7 @@ public class UserEntity implements UserDetails {
         return email; // для аутентификации используем email
     }
 
-    // Дополнительный метод для получения отображаемого имени
+    // Геттер для имени
     public String getName() {
         return username;
     }
@@ -81,4 +85,15 @@ public class UserEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() { return true; }
+
+    // Вспомогательные методы для синхронизации двусторонней связи
+    public void addOrder(OrderEntity order) {
+        orders.add(order);
+        order.setUser(this);
+    }
+
+    public void removeOrder(OrderEntity order) {
+        orders.remove(order);
+        order.setUser(null);
+    }
 }

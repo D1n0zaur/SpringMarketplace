@@ -1,6 +1,6 @@
 package com.marketplace.SelfPraktik.DTO.User;
 
-import com.marketplace.SelfPraktik.Entities.Models.UserRole;
+import com.marketplace.SelfPraktik.Entities.Enums.UserRole;
 
 import java.time.LocalDate;
 
