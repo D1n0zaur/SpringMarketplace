@@ -21,7 +21,6 @@ import java.util.List;
 public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
-    private final static Logger log = LoggerFactory.getLogger(UserService.class);
 
     public List<User> getAllUsers() {
         List<UserEntity> allEntities = repository.findAll();

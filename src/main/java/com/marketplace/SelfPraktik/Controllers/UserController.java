@@ -47,7 +47,7 @@ public class UserController {
     @PatchMapping("/{id}")
     public ResponseEntity<User> updateUser(
             @PathVariable("id") Long id,
-            @Valid @RequestBody UserUpdate updateDTO
+            @RequestBody UserUpdate updateDTO
     ) {
         log.info("Called method updateUser with id={}", id);
 

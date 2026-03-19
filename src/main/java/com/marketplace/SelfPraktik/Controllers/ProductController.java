@@ -57,7 +57,7 @@ public class ProductController {
     @PatchMapping("/{id}")
     public ResponseEntity<Product> updateProduct(
             @PathVariable Long id,
-            @Valid @RequestBody ProductUpdate updateDto
+            @RequestBody ProductUpdate updateDto
     ) {
         log.info("Called updateProduct with id: {}", id);
 
