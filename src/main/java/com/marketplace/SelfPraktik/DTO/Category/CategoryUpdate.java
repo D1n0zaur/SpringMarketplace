@@ -5,9 +5,8 @@ import jakarta.validation.constraints.*;
 import java.util.Optional;
 
 public class CategoryUpdate {
-    @Size(min = 2, max = 100, message = "Category name must be between 2 and 100 characters")
     private Optional<String> name = Optional.empty();
-    @Size(max = 500, message = "Description cannot exceed 500 characters")
+
     private Optional<String> description = Optional.empty();
 
     // Геттеры и сеттеры

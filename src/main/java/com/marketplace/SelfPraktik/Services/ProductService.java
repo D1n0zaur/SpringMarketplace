@@ -12,8 +12,6 @@ import com.marketplace.SelfPraktik.Repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -119,6 +117,7 @@ public class ProductService {
         return mapper.toDomain(saved);
     }
 
+    @Transactional
     public void deleteProduct(Long id) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("Product not fount");

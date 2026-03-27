@@ -7,6 +7,7 @@ import com.marketplace.SelfPraktik.Services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,12 +47,7 @@ public class ProductController {
     public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductCreate request) {
         log.info("Called createProduct with categoryId: {}", request.categoryId());
 
-        Product created = productService.createProduct(request);
-        URI location = URI.create("/products/" + created.id());
-
-        return ResponseEntity
-                .created(location)
-                .body(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(request));
     }
 
     @PatchMapping("/{id}")

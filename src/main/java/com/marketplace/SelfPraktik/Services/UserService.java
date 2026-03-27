@@ -79,6 +79,7 @@ public class UserService {
         return mapper.toDomain(saved);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("User not found");
