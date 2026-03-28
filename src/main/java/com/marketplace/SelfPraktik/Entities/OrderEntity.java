@@ -42,11 +42,21 @@ public class OrderEntity {
     @Column(name = "status", nullable = false)
     private OrderStatus status;
 
-    // Конструктор
-    public OrderEntity(UserEntity user, List<ProductEntity> orderedProducts, BigDecimal orderPrice, LocalDate date, OrderStatus status) {
+    // Конструкторы
+    public OrderEntity(UserEntity user, List<ProductEntity> orderedProducts, BigDecimal orderPrice, String address, LocalDate date, OrderStatus status) {
         this.user = user;
         this.orderedProducts = orderedProducts;
         this.orderPrice = orderPrice;
+        this.address = address;
+        this.date = date;
+        this.status = status;
+    }
+
+    public OrderEntity(CartEntity cart, String address, LocalDate date, OrderStatus status) {
+        this.user = cart.getUser();
+        this.orderedProducts = new ArrayList<>(cart.getProducts());
+        this.orderPrice = cart.getTotalPrice();
+        this.address = address;
         this.date = date;
         this.status = status;
     }

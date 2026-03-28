@@ -41,8 +41,12 @@ public class UserEntity implements UserDetails {
     @Column(name = "role", nullable = false)
     private UserRole role;
 
+    // Связи
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CartEntity cart;
 
     // Конструктор
     public UserEntity(String username, String email, String hashedPassword, LocalDate birth) {
@@ -95,5 +99,12 @@ public class UserEntity implements UserDetails {
     public void removeOrder(OrderEntity order) {
         orders.remove(order);
         order.setUser(null);
+    }
+
+    public void setCart(CartEntity cart) {
+        this.cart = cart;
+        if (cart != null && cart.getUser() != this) {
+            cart.setUser(this);
+        }
     }
 }

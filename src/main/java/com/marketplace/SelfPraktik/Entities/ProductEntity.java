@@ -33,8 +33,12 @@ public class ProductEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 
+    // Связи
     @ManyToMany(mappedBy = "orderedProducts")
     private List<OrderEntity> orders = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "products")
+    private List<CartEntity> carts = new ArrayList<>();
 
     // Конструктор
     public ProductEntity(String name, String description, BigDecimal price, CategoryEntity category) {
