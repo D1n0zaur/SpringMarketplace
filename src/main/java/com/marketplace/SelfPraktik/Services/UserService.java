@@ -2,6 +2,7 @@ package com.marketplace.SelfPraktik.Services;
 
 import com.marketplace.SelfPraktik.DTO.User.User;
 import com.marketplace.SelfPraktik.DTO.User.UserUpdate;
+import com.marketplace.SelfPraktik.Entities.Enums.UserRole;
 import com.marketplace.SelfPraktik.Entities.UserEntity;
 import com.marketplace.SelfPraktik.Mappers.UserMapper;
 import com.marketplace.SelfPraktik.Repositories.UserRepository;
@@ -86,5 +87,18 @@ public class UserService {
         }
 
         repository.deleteById(id);
+    }
+
+    @Transactional
+    public User updateUserRole(Long userId) {
+        UserEntity user = repository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+
+        if(user.getRole() == UserRole.ADMIN) {
+            throw new IllegalArgumentException("This user is already has role ADMIN");
+        }
+
+        user.setRole(UserRole.ADMIN);
+        return mapper.toDomain(repository.save(user));
     }
 }

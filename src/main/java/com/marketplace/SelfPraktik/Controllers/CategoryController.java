@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,39 +25,37 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories() {
         log.info("Called method getAllCategories");
-
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) {
         log.info("Called method getCategoryById with id: {}", id);
-
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> createCategory(@Valid @RequestBody CategoryCreate request) {
         log.info("Called method createCategory");
-
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(request));
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> updateCategory(
             @PathVariable("id") Long id,
             @RequestBody CategoryUpdate request
     ) {
         log.info("Called method updateCategory with id: {}", id);
-
         return ResponseEntity.ok(categoryService.updateCategory(id, request));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteCategory(@PathVariable("id") Long id) {
         log.info("Called method deleteCategory with id: {}", id);
         categoryService.deleteCategory(id);
-
         return ResponseEntity.noContent().build();
     }
 }
