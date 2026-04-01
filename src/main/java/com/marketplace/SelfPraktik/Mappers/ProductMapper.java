@@ -1,6 +1,7 @@
 package com.marketplace.SelfPraktik.Mappers;
 
 import com.marketplace.SelfPraktik.DTO.Product.Product;
+import com.marketplace.SelfPraktik.DTO.Product.ProductSummary;
 import com.marketplace.SelfPraktik.Entities.ProductEntity;
 
 import org.springframework.stereotype.Component;

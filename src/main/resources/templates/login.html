@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Вход</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход – Маркетплейс</title>
     <style>
-        /* Те же стили, что и на регистрации */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: #fafafa;
             display: flex;
             align-items: center;
@@ -14,6 +20,7 @@
             height: 100vh;
             margin: 0;
         }
+
         .card {
             background: white;
             padding: 2.5rem 2rem;
@@ -22,12 +29,14 @@
             width: 100%;
             max-width: 380px;
         }
+
         h2 {
             font-weight: 400;
             margin-bottom: 2rem;
             text-align: center;
             color: #222;
         }
+
         input {
             width: 100%;
             padding: 0.8rem 1rem;
@@ -37,6 +46,7 @@
             font-size: 1rem;
             box-sizing: border-box;
         }
+
         button {
             width: 100%;
             padding: 0.9rem;
@@ -49,9 +59,11 @@
             cursor: pointer;
             transition: background 0.2s;
         }
+
         button:hover {
             background: #000;
         }
+
         .error {
             color: #c00;
             font-size: 0.9rem;
@@ -59,12 +71,14 @@
             margin-bottom: 0.8rem;
             display: none;
         }
+
         .info {
             text-align: center;
             margin-top: 1.5rem;
             font-size: 0.9rem;
             color: #888;
         }
+
         .info a {
             color: #222;
             text-decoration: none;
@@ -76,23 +90,28 @@
 <div class="card">
     <h2>Вход</h2>
     <form id="loginForm">
-        <input type="text" id="email" placeholder="Email" required>
+        <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Пароль" required>
         <div class="error" id="errorMsg"></div>
         <button type="submit">Войти</button>
     </form>
     <div class="info">
-        Нет аккаунта? <a href="/auth/register">Зарегистрироваться</a>
+        Нет аккаунта? <a href="/register">Зарегистрироваться</a>
     </div>
 </div>
 
 <script>
+    // Проверяем, есть ли уже токен – если есть, редирект на главную
+    const token = localStorage.getItem('token');
+    if (token) {
+        window.location.href = '/home';
+    }
+
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const errorDiv = document.getElementById('errorMsg');
-
         errorDiv.style.display = 'none';
 
         try {
@@ -105,10 +124,10 @@
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.token);
-                window.location.href = '/profile'; // или на главную
+                window.location.href = '/home';
             } else {
                 const err = await response.text();
-                errorDiv.textContent = err || 'Неверный логин или пароль';
+                errorDiv.textContent = err || 'Неверный email или пароль';
                 errorDiv.style.display = 'block';
             }
         } catch (err) {

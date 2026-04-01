@@ -38,10 +38,23 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/auth/**").permitAll()   // разрешаем вход/регистрацию
-                        .requestMatchers("/auth/**").permitAll()       // если старые пути ещё используются
-                        .requestMatchers("/", "/profile", "/css/**", "/js/**").permitAll()
+                        // Открытые API (регистрация, логин)
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
+
+                        // Статические ресурсы и страницы
+                        .requestMatchers(
+                                "/", "/home", "/profile", "/css/**", "/js/**", "/images/**",
+                                "/order/**", "/cart", "/category/**"
+                        ).permitAll()
+
+                        // Изображения товаров – доступны всем (без токена)
+                        .requestMatchers("/api/products/*/image").permitAll()
+
+                        // Все остальные API требуют аутентификации
                         .requestMatchers("/api/**").authenticated()
+
+                        // Любой другой запрос – тоже аутентификация (на всякий случай)
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

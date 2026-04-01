@@ -25,4 +25,24 @@ public class PageController {
     public String profilePage() {
         return "profile";
     }
+
+    @GetMapping("/home")
+    public String mainPage() {
+        return "home";
+    }
+
+    @GetMapping("/order/{id}")
+    public String orderDetailsPage() {
+        return "order";
+    }
+
+    @GetMapping("/cart")
+    public String cartPage() {
+        return "cart";
+    }
+
+    @GetMapping("/category/{id}")
+    public String categoryPage() {
+        return "category";
+    }
 }

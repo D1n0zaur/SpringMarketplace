@@ -4,6 +4,7 @@ import com.marketplace.SelfPraktik.DTO.Order.Order;
 import com.marketplace.SelfPraktik.DTO.Order.OrderCreate;
 import com.marketplace.SelfPraktik.Entities.CartEntity;
 import com.marketplace.SelfPraktik.Entities.Enums.OrderStatus;
+import com.marketplace.SelfPraktik.Entities.Enums.UserRole;
 import com.marketplace.SelfPraktik.Entities.OrderEntity;
 import com.marketplace.SelfPraktik.Mappers.OrderMapper;
 import com.marketplace.SelfPraktik.Repositories.CartRepository;
@@ -47,11 +48,15 @@ public class OrderService {
                 .map(mapper::toDomain).toList();
     }
 
-    public Order getOrderById(Long id) {
-        OrderEntity entity = repository.findById(id)
+    public Order getOrderById(Long orderId, Long currentUserId) {
+        OrderEntity order = repository.findById(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found"));
 
-        return mapper.toDomain(entity);
+        if (!order.getUser().getId().equals(currentUserId) && !isAdmin(currentUserId)) {
+            throw new AccessDeniedException("You can only view your own orders");
+        }
+
+        return mapper.toDomain(order);
     }
 
     @Transactional
@@ -108,5 +113,11 @@ public class OrderService {
         OrderEntity saved = repository.save(entity);
 
         return mapper.toDomain(saved);
+    }
+
+    private boolean isAdmin(Long userId) {
+        return userRepository.findById(userId)
+                .map(user -> user.getRole() == UserRole.ADMIN)
+                .orElse(false);
     }
 }

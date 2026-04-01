@@ -45,11 +45,18 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long orderId) {
-        log.info("Called method getOrderById with orderId: {}", orderId);
+    public ResponseEntity<Order> getOrderById(
+            @PathVariable Long orderId,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        Long currentUserId = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User not found"))
+                .getId();
 
-        return ResponseEntity.ok(service.getOrderById(orderId));
+        log.info("Called method getOrderById with id: {}", currentUserId);
+
+        Order order = service.getOrderById(orderId, currentUserId);
+        return ResponseEntity.ok(order);
     }
 
     @PatchMapping("/{orderId}/deliver")
@@ -89,6 +96,8 @@ public class OrderController {
         UserEntity currentUser = getCurrentUser(userDetails);
         return ResponseEntity.ok(service.cancelOrder(orderId, currentUser.getId()));
     }
+
+
 
     private UserEntity getCurrentUser(UserDetails userDetails) {
         return userRepository.findByEmail(userDetails.getUsername())

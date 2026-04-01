@@ -93,7 +93,7 @@ public class ProductController {
 
     @GetMapping("/{id}/image")
     public ResponseEntity<Resource> getProductImage(@PathVariable Long id) throws IOException {
-        ProductEntity product = productService.getProductEntityById(id); // нужно добавить этот метод в сервис
+        ProductEntity product = productService.getProductEntityById(id);
         if (product.getImageFilename() == null) {
             return ResponseEntity.notFound().build();
         }
