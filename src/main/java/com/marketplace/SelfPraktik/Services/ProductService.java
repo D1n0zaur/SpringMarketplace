@@ -1,5 +1,6 @@
 package com.marketplace.SelfPraktik.Services;
 
+import com.marketplace.SelfPraktik.Config.FileStorageConfig;
 import com.marketplace.SelfPraktik.DTO.Product.Product;
 import com.marketplace.SelfPraktik.DTO.Product.ProductCreate;
 import com.marketplace.SelfPraktik.DTO.Product.ProductUpdate;
@@ -12,10 +13,16 @@ import com.marketplace.SelfPraktik.Repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
+import java.nio.file.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +30,8 @@ public class ProductService {
     private final ProductRepository repository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper mapper;
+    private final FileStorageConfig fileStorageConfig;
+    private final static Logger log = LoggerFactory.getLogger(ProductService.class);
 
     public List<Product> getAllProducts() {
         List<ProductEntity> allEntities = repository.findAll();
@@ -124,5 +133,51 @@ public class ProductService {
         }
 
         repository.deleteById(id);
+    }
+
+    @Transactional
+    public Product saveProductImage(Long productId, MultipartFile file) throws IOException {
+        ProductEntity product = repository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new IllegalArgumentException("Only image files are allowed");
+        }
+
+        String originalFilename = file.getOriginalFilename();
+        String extension = "";
+        if (originalFilename != null && originalFilename.contains(".")) {
+            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        }
+        String newFilename = UUID.randomUUID().toString() + extension;
+
+        Path uploadPath = Paths.get(fileStorageConfig.getUploadDir());
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        Path filePath = uploadPath.resolve(newFilename);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        if (product.getImageFilename() != null) {
+            Path oldFilePath = uploadPath.resolve(product.getImageFilename());
+            try {
+                Files.deleteIfExists(oldFilePath);
+            } catch (IOException e) {
+                log.warn("Failed to delete old image: {}", oldFilePath);
+            }
+        }
+
+        product.setImageFilename(newFilename);
+        repository.save(product);
+
+        return mapper.toDomain(product);
+    }
+
+    public ProductEntity getProductEntityById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
     }
 }

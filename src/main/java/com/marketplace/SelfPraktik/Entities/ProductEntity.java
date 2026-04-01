@@ -1,9 +1,7 @@
 package com.marketplace.SelfPraktik.Entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,6 +17,9 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "image_filename")
+    private String imageFilename;
 
     @Column(name = "name", nullable = false)
     private String name;

@@ -3,7 +3,6 @@ package com.marketplace.SelfPraktik.Controllers;
 import com.marketplace.SelfPraktik.DTO.User.User;
 import com.marketplace.SelfPraktik.DTO.User.UserUpdate;
 import com.marketplace.SelfPraktik.Services.UserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

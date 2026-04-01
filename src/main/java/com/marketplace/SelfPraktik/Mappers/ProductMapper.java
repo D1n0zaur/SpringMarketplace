@@ -13,7 +13,8 @@ public class ProductMapper {
                 productEntity.getCategory().getName(),
                 productEntity.getName(),
                 productEntity.getDescription(),
-                productEntity.getPrice()
+                productEntity.getPrice(),
+                productEntity.getImageFilename() != null ? "/api/products/" + productEntity.getId() + "/image" : null
         );
     }
 }

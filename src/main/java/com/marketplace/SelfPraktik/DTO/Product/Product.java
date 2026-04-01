@@ -7,5 +7,6 @@ public record Product(
     String category,
     String name,
     String description,
-    BigDecimal price
+    BigDecimal price,
+    String imageURL
 ) {}
