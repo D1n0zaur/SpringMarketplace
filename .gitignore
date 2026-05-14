@@ -98,8 +98,8 @@ secrets/
 gradle-app.setting
 !gradle-wrapper.jar
 
-### Maven (уже есть в проекте) ###
-.mvn/
+### Maven (конфигурация обёртки – не игнорируем) ###
+# .mvn/                         # <-- эта строка удалена (теперь папка .mvn будет включена)
 mvnw
 mvnw.cmd
 !**/src/main/**/target/
