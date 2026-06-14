@@ -20,17 +20,6 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception e) {
-        log.error("Handle exception: ", e);
-        var errorDTO = new ErrorResponseDTO(
-                "Internal Server Error",
-                e.getMessage(),
-                LocalDateTime.now()
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDTO);
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleEntityNotFound(EntityNotFoundException e) {
         log.error("Handle entityNotFoundException: ", e);

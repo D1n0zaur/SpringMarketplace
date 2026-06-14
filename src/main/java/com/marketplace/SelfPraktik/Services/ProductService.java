@@ -129,7 +129,7 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long id) {
         if (!repository.existsById(id)) {
-            throw new EntityNotFoundException("Product not fount");
+            throw new EntityNotFoundException("Product not found");
         }
 
         repository.deleteById(id);
